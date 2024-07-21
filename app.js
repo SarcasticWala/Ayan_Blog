@@ -2,15 +2,15 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const blogRoutes = require('./routes/blogRoutes');
-
+require('dotenv').config();
+const PORT= process.env.PORT || 3001;
 // express app
 const app = express();
 
 // connect to mongodb & listen for requests
-const dbURI='mongodb+srv://ayandas:hello123hello@ayanblog.dwslwrc.mongodb.net/Blog-Ayan?retryWrites=true&w=majority';
-
+const dbURI= process.env.DB_URL;
 mongoose.connect(dbURI)
-  .then(result => app.listen(3001))
+  .then(result => app.listen(PORT))
   .catch(err => console.log(err));
 // register view engine
 app.set('view engine', 'ejs');
