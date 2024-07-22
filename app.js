@@ -9,13 +9,14 @@ const app = express();
 
 // connect to mongodb & listen for requests
 const dbURI= process.env.DB_URL;
-mongoose.connect(dbURI)
-    .then(() => {
-        console.log('Connected to database');
-    })
-    .catch((err) => {
-        console.log('Error in database connection', err);
-    });
+if (!dbURI) {
+  console.error('MongoDB connection string is undefined. Please check your environment variables.');
+  process.exit(1);
+}
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Error connecting to MongoDB:', err));
+
 // register view engine
 app.set('view engine', 'ejs');
 
