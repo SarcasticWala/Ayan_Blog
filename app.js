@@ -3,18 +3,24 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const blogRoutes = require('./routes/blogRoutes');
 require('dotenv').config();
-const PORT= process.env.PORT || 3000;
-// express app
+
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 // connect to mongodb & listen for requests
-const dbURI= process.env.DB_URL;
+const dbURI = process.env.DB_URL;
 if (!dbURI) {
   console.error('MongoDB connection string is undefined. Please check your environment variables.');
   process.exit(1);
 }
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
+
+mongoose.connect(dbURI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
   .catch(err => console.error('Error connecting to MongoDB:', err));
 
 // register view engine
