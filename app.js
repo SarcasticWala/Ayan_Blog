@@ -3,15 +3,19 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const blogRoutes = require('./routes/blogRoutes');
 require('dotenv').config();
-const PORT= process.env.PORT || 3001;
+const PORT= process.env.PORT || 3000;
 // express app
 const app = express();
 
 // connect to mongodb & listen for requests
 const dbURI= process.env.DB_URL;
 mongoose.connect(dbURI)
-  .then(result => app.listen(PORT))
-  .catch(err => console.log(err));
+    .then(() => {
+        console.log('Connected to database');
+    })
+    .catch((err) => {
+        console.log('Error in database connection', err);
+    });
 // register view engine
 app.set('view engine', 'ejs');
 
